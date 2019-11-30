@@ -24,7 +24,7 @@ class DatasetDownloader(object):
         self.create_dataset_directory()
 
         if self.check_dataset():
-            print("data is present")
+            print("data is present at {}".format(self.path))
         else:
             filename = wget.download(self.url, out=self.path)
             print(f"{filename} is downloaded")

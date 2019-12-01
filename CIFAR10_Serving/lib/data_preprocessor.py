@@ -3,7 +3,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 class DataPreprocessor(object):
-    def __init__(self, data, labels):
+    def __init__(self, data, labels=None):
         """ Input data require as numpy formats"""
         self.__data = data
         self.__labels = labels
@@ -29,8 +29,13 @@ class DataPreprocessor(object):
         self._standardize_data()
         return self.__data
 
-    def store_preprocessing_parameters(self):
+    def store_preprocessing_parameters(self, file_name="parameters.npy"):
         self._calculate_preprocessing_parameters()
+        store_data = np.asarray([self.__mean, self.__max, self.__min])
+        np.save(file_name, store_data)
 
-    def restore_preprocessing_parameters(self):
-        pass
+    def restore_preprocessing_parameters(self, file_name="parameters.npy"):
+        load_data = np.load(file_name)
+        self.__mean = load_data[0]
+        self.__max = load_data[1]
+        self.__min = load_data[2]

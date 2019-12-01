@@ -18,12 +18,16 @@ def main():
     train_data = preprocessor.get_reprocessed_data()
     train_labels = preprocessor.one_hot_encode_labels()
 
-    print("first image: ")
-    print(train_data[0])
     print("train_data shape: ", train_data.shape)
     print("train_labels shape: ", train_labels.shape)
-    # print("test_data shape: ", test_data.shape)
-    # print("test_labels shape: ", test_labels.shape)
+
+    preprocessor_test = DataPreprocessor(data=test_data, labels=test_labels)
+    preprocessor_test.restore_preprocessing_parameters()
+    test_data = preprocessor_test.get_reprocessed_data()
+    test_labels = preprocessor_test.one_hot_encode_labels()
+
+    print("test_data shape: ", test_data.shape)
+    print("test_labels shape: ", test_labels.shape)
 
 
 if __name__ == "__main__":

@@ -45,7 +45,8 @@ def main():
         test_data=test_data,
         test_labels=test_labels,
     )
-    model_trainer.train_model()
+    model_trainer.train_model(epochs=10, batch_size=32)
+    model_trainer.save_model(model_path="./model.ckpt")
 
 
 if __name__ == "__main__":

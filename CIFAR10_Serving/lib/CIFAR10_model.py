@@ -45,10 +45,10 @@ class CIFAR10Model(Model):
         dense1 = tf.nn.relu(tf.nn.bias_add(tf.matmul(dense, self._weights["w4"]), self._biases["b4"]))
 
         # used for training the CNN model
-        out = tf.nn.bias_add(tf.matmul(dense1, self._weights["w5"]), self._biases["b5"])
+        out = tf.nn.bias_add(tf.matmul(dense1, self._weights["w5"]), self._biases["b5"], name="output_model")
 
         # used after training the CNN
-        softmax = tf.nn.softmax(out)
+        softmax = tf.nn.softmax(out, name="output_softmax")
         return out, softmax
 
     def build_model(self, input_data_placeholder):

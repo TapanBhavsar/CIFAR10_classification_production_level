@@ -23,8 +23,8 @@ class ModelTrainer(ABC):
         labels_shape=[None, 10],
         labels_datatype=tf.int32,
     ):
-        self._input_data = tf.placeholder(input_datatype, input_data_shape)
-        self._input_labels = tf.placeholder(labels_datatype, labels_shape)
+        self._input_data = tf.placeholder(input_datatype, input_data_shape, name="inputs")
+        self._input_labels = tf.placeholder(labels_datatype, labels_shape, name="output")
 
     @staticmethod
     def _iterate_minibatches(inputs, targets, batchsize, shuffle=False):

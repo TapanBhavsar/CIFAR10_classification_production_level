@@ -8,9 +8,10 @@ from cifar10_model_trainer import CIFAR10ModelTrainer
 def main():
     DATASET_PATH = "./CIFAR10_Serving/dataset/"
     DATASET_URL = "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
+    MODEL_PATH = "./CIFAR10_Serving/model_weights/model.ckpt"  # @TODO add logic to create model_Weights folder
 
-    # cifar10 = CIFAR10Downloader(URL=DATASET_URL, path=DATASET_PATH)
-    # cifar10.extract_downloaded_dataset()
+    cifar10 = CIFAR10Downloader(URL=DATASET_URL, path=DATASET_PATH)
+    cifar10.extract_downloaded_dataset()
 
     dataset = CIFAR10Dataset(path=DATASET_PATH)
     train_data, train_labels, test_data, test_labels = dataset.create_dataset_format()
@@ -46,7 +47,7 @@ def main():
         test_labels=test_labels,
     )
     model_trainer.train_model(epochs=10, batch_size=32)
-    model_trainer.save_model(model_path="./model.ckpt")
+    model_trainer.save_model(model_path=MODEL_PATH)
 
 
 if __name__ == "__main__":

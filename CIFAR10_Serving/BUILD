@@ -5,8 +5,19 @@ py_library(
 )
 
 py_binary(
-    name = "CIFAR10_serving",
+    name = "CIFAR10_serving_trainer",
     srcs = ["main_engine/CIFAR_10_model_trainer.py"],
     main = "main_engine/CIFAR_10_model_trainer.py",
+    deps = [":CIFAR10_serving_lib"],
+)
+
+py_binary(
+    name = "CIFAR10_serving_prediction",
+    srcs = ["main_engine/CIFAR_10_model_prediction.py"],
+    data = glob([
+        "test/*",
+        "model_weights/*",
+    ]),
+    main = "main_engine/CIFAR_10_model_prediction.py",
     deps = [":CIFAR10_serving_lib"],
 )

@@ -8,8 +8,8 @@ from cifar10_model_trainer import CIFAR10ModelTrainer
 def main():
     DATASET_PATH = "./CIFAR10_Serving/dataset/"
     DATASET_URL = "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
-    MODEL_PATH = "./CIFAR10_Serving/model_weights/model.ckpt"  # @TODO add logic to create model_Weights folder
-
+    MODEL_PATH = "./CIFAR10_Serving/model_weights/model.ckpt"
+    PARAMETER_FILE_PATH = "./CIFAR10_Serving/parameters/parameters.npy"
     cifar10 = CIFAR10Downloader(URL=DATASET_URL, path=DATASET_PATH)
     cifar10.extract_downloaded_dataset()
 
@@ -17,12 +17,12 @@ def main():
     train_data, train_labels, test_data, test_labels = dataset.create_dataset_format()
 
     preprocessor = DataPreprocessor(data=train_data, labels=train_labels)
-    preprocessor.store_preprocessing_parameters()
+    preprocessor.store_preprocessing_parameters(file_name=PARAMETER_FILE_PATH)
     train_data = preprocessor.get_reprocessed_data()
     train_labels = preprocessor.one_hot_encode_labels()
 
     preprocessor_test = DataPreprocessor(data=test_data, labels=test_labels)
-    preprocessor_test.restore_preprocessing_parameters()
+    preprocessor_test.restore_preprocessing_parameters(file_name=PARAMETER_FILE_PATH)
     test_data = preprocessor_test.get_reprocessed_data()
     test_labels = preprocessor_test.one_hot_encode_labels()
 

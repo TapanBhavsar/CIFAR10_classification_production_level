@@ -1,5 +1,7 @@
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
+import os
+import utilities
 
 
 class DataPreprocessor(object):
@@ -21,15 +23,15 @@ class DataPreprocessor(object):
 
     def one_hot_encode_labels(self, datatype=np.float):
         encoder = OneHotEncoder(dtype=datatype)
-        return encoder.fit_transform(
-            self.__labels.reshape(len(self.__labels), -1)
-        ).toarray()
+        return encoder.fit_transform(self.__labels.reshape(len(self.__labels), -1)).toarray()
 
     def get_reprocessed_data(self):
         self._standardize_data()
         return self.__data
 
     def store_preprocessing_parameters(self, file_name="parameters.npy"):
+        folder, file = os.path.split(file_name)
+        utilities.create_folder(folder)
         self._calculate_preprocessing_parameters()
         store_data = np.asarray([self.__mean, self.__max, self.__min])
         np.save(file_name, store_data)

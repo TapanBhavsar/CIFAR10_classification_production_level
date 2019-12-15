@@ -2,6 +2,8 @@ from model_trainer import ModelTrainer
 from CIFAR10_model import CIFAR10Model
 import tensorflow as tf
 import time
+import os
+import utilities
 
 
 class CIFAR10ModelTrainer(ModelTrainer):
@@ -99,5 +101,7 @@ class CIFAR10ModelTrainer(ModelTrainer):
         print("  test accuracy:\t\t{:.2f} %".format(test_acc / test_batches * 100))
 
     def save_model(self, model_path):
+        model_folder, model_file = os.path.split(model_path)
+        utilities.create_folder(model_folder)
         save_path = self.__model_saver.save(self.__session, model_path)
 

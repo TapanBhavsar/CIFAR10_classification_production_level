@@ -3,10 +3,13 @@ import os
 import cv2
 import numpy as np
 
+from data_preprocessor import DataPreprocessor
+
 
 class ModelPrediction:
-    def __init__(self, model_path):
+    def __init__(self, model_path, parameter_file):
         self._model_path = model_path
+        self._parameter_file = parameter_file
         self._session = tf.Session()
         self._input_node = None
         self._prediction_node = None
@@ -20,7 +23,9 @@ class ModelPrediction:
         input_image = cv2.imread(image_path)
         input_image = cv2.resize(input_image, (self._input_shape[0], self._input_shape[1]))
         input_image = np.expand_dims(input_image, axis=0)
-        # @TODO add preporocessing part
+        preprocessor_prediction = DataPreprocessor(input_image)
+        preprocessor_prediction.restore_preprocessing_parameters(file_name=self._parameter_file)
+        input_image = preprocessor_prediction.get_reprocessed_data()
         return input_image
 
     @staticmethod

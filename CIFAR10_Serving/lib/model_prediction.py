@@ -7,6 +7,8 @@ from data_preprocessor import DataPreprocessor
 
 
 class ModelPrediction:
+    LABELS_FILE_PATH = "./CIFAR10_Serving/data/class_names.txt"
+
     def __init__(self, model_path, parameter_file):
         self._model_path = model_path
         self._parameter_file = parameter_file
@@ -17,7 +19,13 @@ class ModelPrediction:
         self._input_shape = self._input_node.shape[1:]
 
     def is_model_present(self):
-        pass
+        return os.path.exists(self._model_path)
+
+    def _get_class_prediction(self, prediction_array):
+        max_value_index = np.argmax(prediction_array)
+        with open(self.LABELS_FILE_PATH) as file:
+            file_lines = file.readlines()
+            return file_lines[max_value_index]
 
     def _read_image(self, image_path):
         input_image = cv2.imread(image_path)
@@ -44,5 +52,5 @@ class ModelPrediction:
 
     def predict_input_image(self, image_path):
         input_image = self._read_image(image_path)
-        output_prediction = self._session.run([self._prediction_node], feed_dict={self._input_node: input_image})
-        print(output_prediction)
+        output_prediction = self._session.run([self._prediction_node], feed_dict={self._input_node: input_image})[0]
+        return self._get_class_prediction(prediction_array=output_prediction)

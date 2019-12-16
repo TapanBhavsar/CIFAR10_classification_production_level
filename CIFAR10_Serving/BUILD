@@ -16,6 +16,7 @@ py_binary(
     srcs = ["main_engine/CIFAR_10_model_prediction.py"],
     data = glob([
         "test/*",
+        "data/*",
     ]),
     main = "main_engine/CIFAR_10_model_prediction.py",
     deps = [":CIFAR10_serving_lib"],

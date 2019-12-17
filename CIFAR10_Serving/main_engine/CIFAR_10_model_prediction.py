@@ -9,7 +9,7 @@ def main():
 
     predicted_class = ""
     if model_predictor.is_model_present():
-        predicted_class = model_predictor.predict_input_image(IMAGE_PATH)
+        predicted_class, _ = model_predictor.predict_input_image(IMAGE_PATH)
     else:
         print("please train model first...")
 

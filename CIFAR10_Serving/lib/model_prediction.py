@@ -53,4 +53,4 @@ class ModelPrediction:
     def predict_input_image(self, image_path):
         input_image = self._read_image(image_path)
         output_prediction = self._session.run([self._prediction_node], feed_dict={self._input_node: input_image})[0]
-        return self._get_class_prediction(prediction_array=output_prediction)
+        return self._get_class_prediction(prediction_array=output_prediction), np.max(output_prediction)

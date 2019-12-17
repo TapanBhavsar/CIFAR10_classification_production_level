@@ -21,3 +21,14 @@ py_binary(
     main = "main_engine/CIFAR_10_model_prediction.py",
     deps = [":CIFAR10_serving_lib"],
 )
+
+py_binary(
+    name = "CIFAR10_serving_prediction_API",
+    srcs = ["main_engine/prediction_application.py"],
+    data = glob([
+        "test/*",
+        "data/*",
+    ]),
+    main = "main_engine/prediction_application.py",
+    deps = [":CIFAR10_serving_lib"],
+)

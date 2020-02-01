@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 import os
+import cv2
+import numpy as np
 
 from model_prediction import ModelPrediction
 
@@ -14,16 +16,11 @@ app = Flask(__name__)
 
 @app.route("/predict_image", methods=["POST"])
 def predict_image():
-    json_data = request.get_json()
-    if json_data["file"] is None:
-        return jsonify({"error": "no file"}), 400
-    # Image info
-    img_file = json_data.get("file")
-    # Write image to static directory and do the hot dog check
-    image_path = os.path.join(UPLOAD_FOLDER, img_file)
-    # img_file.save(image_path)
+    data = request.files["file"]
+    encoded_image = np.fromfile(data, np.uint8)
+    input_image = cv2.imdecode(encoded_image, cv2.IMREAD_COLOR)
     if model_predictor.is_model_present():
-        predicted_class, predicted_confidence = model_predictor.predict_input_image(image_path)
+        predicted_class, predicted_confidence = model_predictor.predict_input_image_api(input_image)
         response = {"class_name": predicted_class, "confidence": str(predicted_confidence)}
     else:
         response = {"message": "Trained model is not present please train the model first"}
@@ -31,3 +28,5 @@ def predict_image():
 
 
 app.run(host="127.0.0.1", port=4000)
+
+# curl -F "file=@<file path>" http://<localhost:port>/predict_image

@@ -29,6 +29,9 @@ class ModelPrediction:
 
     def _read_image(self, image_path):
         input_image = cv2.imread(image_path)
+        return self._preprocess_image(input_image)
+
+    def _preprocess_image(self, input_image):
         input_image = cv2.resize(input_image, (self._input_shape[0], self._input_shape[1]))
         input_image = np.expand_dims(input_image, axis=0)
         preprocessor_prediction = DataPreprocessor(input_image)
@@ -52,5 +55,10 @@ class ModelPrediction:
 
     def predict_input_image(self, image_path):
         input_image = self._read_image(image_path)
+        output_prediction = self._session.run([self._prediction_node], feed_dict={self._input_node: input_image})[0]
+        return self._get_class_prediction(prediction_array=output_prediction), np.max(output_prediction)
+
+    def predict_input_image_api(self, input_image):
+        input_image = self._preprocess_image(input_image)
         output_prediction = self._session.run([self._prediction_node], feed_dict={self._input_node: input_image})[0]
         return self._get_class_prediction(prediction_array=output_prediction), np.max(output_prediction)
